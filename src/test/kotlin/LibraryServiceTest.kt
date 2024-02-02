@@ -44,6 +44,9 @@ class LibraryServiceTest {
 
     @Test
     fun findBookByISBN() {
+        val bookISBN = "123"
+        val (_, _, isbnFromBook) = service.findBookByISBN(bookISBN)
+        assertEquals(bookISBN, isbnFromBook)
     }
 
     @Test

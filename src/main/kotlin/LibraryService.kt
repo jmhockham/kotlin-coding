@@ -12,7 +12,7 @@ class LibraryService (private val bookRepository: BookRepository) {
     }
 
     fun findBookByISBN(isbn: String): Book {
-        return Book("","", "")
+        return bookRepository.findBooksByISBN(isbn).first()
     }
 
     fun checkoutBook(book: Book): Book {

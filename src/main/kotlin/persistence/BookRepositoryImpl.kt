@@ -25,7 +25,7 @@ class BookRepositoryImpl : BookRepository {
     }
 
     override fun findBooksByISBN(isbn: String): List<Book> {
-        TODO("Not yet implemented")
+        return books.filter { book: Book -> book.isbn.contains(isbn) }
     }
 
     override fun checkoutBook(book: Book): Book {

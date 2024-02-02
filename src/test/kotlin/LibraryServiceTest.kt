@@ -16,8 +16,8 @@ class LibraryServiceTest {
     fun setup() {
         repository.removeAllBooks()
         val booksToAdd = listOf(
-            Book("bob smith", "xxx", "000"),
-            Book("sam smith", "xxx", "000"),
+            Book("Bob Smith", "xxx", "000"),
+            Book("Sam Smith", "xxx", "000"),
             Book("abc", "coolBook", "000"),
             Book("abc", "otherBook", "000"),
             Book("abc", "xxx", "123"),
@@ -28,7 +28,7 @@ class LibraryServiceTest {
 
     @Test
     fun findBookByAuthor() {
-        val authorName = "bob smith"
+        val authorName = "Bob Smith"
 
         val booksByAuthor = service.findBooksByAuthor(authorName)
 
@@ -56,8 +56,8 @@ class LibraryServiceTest {
 
         assertNotNull(booksByAuthor)
         assertTrue(booksByAuthor.size == 2)
-        assertTrue(booksByAuthor.contains(Book("bob smith", "xxx", "000")))
-        assertTrue(booksByAuthor.contains(Book("sam smith", "xxx", "000")))
+        assertTrue(booksByAuthor.contains(Book("Bob Smith", "xxx", "000")))
+        assertTrue(booksByAuthor.contains(Book("Sam Smith", "xxx", "000")))
     }
 
     @Test
@@ -69,6 +69,30 @@ class LibraryServiceTest {
         assertNotNull(booksByTitle)
         assertTrue(booksByTitle.size == 1)
         assertEquals(bookTitle, booksByTitle.first().title)
+    }
+
+    @Test
+    fun findMultipleBooksByTitle(){
+        val bookTitle = "xxx"
+
+        val booksByTitle = service.findBooksByTitle(bookTitle)
+
+        assertNotNull(booksByTitle)
+        assertTrue(booksByTitle.size == 4)
+        assertEquals(bookTitle, booksByTitle.first().title)
+    }
+
+    @Test
+    fun findMultipleBooksByTitleFuzzySearch(){
+        val bookTitle = "book"
+
+        val booksByTitle = service.findBooksByTitle(bookTitle)
+
+        assertNotNull(booksByTitle)
+        assertTrue(booksByTitle.size == 2)
+        assertTrue(booksByTitle.contains(Book("abc", "coolBook", "000")))
+        assertTrue(booksByTitle.contains(Book("abc", "otherBook", "000")))
+
     }
 
     @Test

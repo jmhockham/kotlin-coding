@@ -17,15 +17,15 @@ class BookRepositoryImpl : BookRepository {
     }
 
     override fun findBooksByAuthor(authorName: String): List<Book> {
-        return books.filter { book: Book -> book.author.contains(authorName) }
+        return books.filter { book: Book -> book.author.lowercase().contains(authorName.lowercase()) }
     }
 
     override fun findBooksByTitle(bookName: String): List<Book> {
-        return books.filter { book: Book -> book.title.contains(bookName) }
+        return books.filter { book: Book -> book.title.lowercase().contains(bookName.lowercase()) }
     }
 
     override fun findBooksByISBN(isbn: String): List<Book> {
-        return books.filter { book: Book -> book.isbn.contains(isbn) }
+        return books.filter { book: Book -> book.isbn.lowercase().contains(isbn.lowercase()) }
     }
 
     override fun checkoutBook(book: Book): Book {

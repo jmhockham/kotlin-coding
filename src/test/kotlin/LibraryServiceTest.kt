@@ -16,8 +16,8 @@ class LibraryServiceTest {
     fun setup() {
         repository.removeAllBooks()
         val booksToAdd = listOf(
-            Book("bob", "xxx", "000"),
-            Book("sam", "xxx", "000"),
+            Book("bob smith", "xxx", "000"),
+            Book("sam smith", "xxx", "000"),
             Book("abc", "coolBook", "000"),
             Book("abc", "otherBook", "000"),
             Book("abc", "xxx", "123"),
@@ -28,13 +28,36 @@ class LibraryServiceTest {
 
     @Test
     fun findBookByAuthor() {
-        val authorName = "bob"
+        val authorName = "bob smith"
 
         val booksByAuthor = service.findBooksByAuthor(authorName)
 
         assertNotNull(booksByAuthor)
         assertTrue(booksByAuthor.size == 1)
         assertEquals(authorName, booksByAuthor.first().author)
+    }
+
+    @Test
+    fun findMultipleBooksByAuthor(){
+        val authorName = "abc"
+
+        val booksByAuthor = service.findBooksByAuthor(authorName)
+
+        assertNotNull(booksByAuthor)
+        assertTrue(booksByAuthor.size == 4)
+        assertEquals(authorName, booksByAuthor.first().author)
+    }
+
+    @Test
+    fun findMultipleBooksByAuthorFuzzySearch(){
+        val authorName = "smith"
+
+        val booksByAuthor = service.findBooksByAuthor(authorName)
+
+        assertNotNull(booksByAuthor)
+        assertTrue(booksByAuthor.size == 2)
+        assertTrue(booksByAuthor.contains(Book("bob smith", "xxx", "000")))
+        assertTrue(booksByAuthor.contains(Book("sam smith", "xxx", "000")))
     }
 
     @Test

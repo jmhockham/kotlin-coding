@@ -18,3 +18,9 @@ I have many books which I would like to share with my community. That sounds lik
 - As the library owner, I would like to know how many books are being borrowed, so I can see how many are outstanding.
 
 - As a library user, I should be to prevented from borrowing reference books, so that they are always available.
+
+### Not in scope
+
+- Keeping track of who has borrowed the book
+- Overdue books
+- Multiple copies of the same book

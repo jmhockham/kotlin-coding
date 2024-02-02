@@ -20,8 +20,8 @@ class LibraryServiceTest {
             Book("Sam Smith", "xxx", "000"),
             Book("abc", "coolBook", "000"),
             Book("abc", "otherBook", "000"),
-            Book("abc", "xxx", "123"),
-            Book("abc", "xxx", "456")
+            Book("abc", "xxx", "1234"),
+            Book("abc", "xxx", "4567")
         )
         repository.addBooks(booksToAdd)
     }
@@ -96,13 +96,36 @@ class LibraryServiceTest {
 
     @Test
     fun findBookByISBN() {
-        val bookISBN = "123"
+        val bookISBN = "1234"
 
         val booksByISBN = service.findBooksByISBN(bookISBN)
 
         assertNotNull(booksByISBN)
         assertTrue(booksByISBN.size == 1)
         assertEquals(bookISBN, booksByISBN.first().isbn)
+    }
+
+    @Test
+    fun findMultipleBooksByISBN() {
+        val bookISBN = "000"
+
+        val booksByISBN = service.findBooksByISBN(bookISBN)
+
+        assertNotNull(booksByISBN)
+        assertTrue(booksByISBN.size == 4)
+        assertEquals(bookISBN, booksByISBN.first().isbn)
+    }
+
+    @Test
+    fun findMultipleBooksByISBNFuzzySearch() {
+        val bookISBN = "4"
+
+        val booksByISBN = service.findBooksByISBN(bookISBN)
+
+        assertNotNull(booksByISBN)
+        assertTrue(booksByISBN.size == 2)
+        assertTrue(booksByISBN.contains(Book("abc", "xxx", "1234")))
+        assertTrue(booksByISBN.contains(Book("abc", "xxx", "4567")))
     }
 
     @Test

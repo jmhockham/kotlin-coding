@@ -16,8 +16,12 @@ class LibraryServiceTest {
     fun setup() {
         repository.removeAllBooks()
         val booksToAdd = listOf(
-            Book("bob", "", ""),
-            Book("sam", "", "")
+            Book("bob", "xxx", "000"),
+            Book("sam", "xxx", "000"),
+            Book("abc", "coolBook", "000"),
+            Book("abc", "otherBook", "000"),
+            Book("abc", "xxx", "123"),
+            Book("abc", "xxx", "456")
         )
         repository.addBooks(booksToAdd)
     }
@@ -32,6 +36,10 @@ class LibraryServiceTest {
 
     @Test
     fun findBookByTitle() {
+        val bookTitle = "coolBook"
+
+        val (_ , titleFromBook) = service.findBookByTitle(bookTitle)
+        assertEquals(bookTitle, titleFromBook)
     }
 
     @Test

@@ -4,12 +4,11 @@ import persistence.BookRepository
 class LibraryService (private val bookRepository: BookRepository) {
 
     fun findBookByAuthor(authorName: String): Book {
-        val booksByAuthor = bookRepository.findBooksByAuthor(authorName)
-        return booksByAuthor.first()
+        return bookRepository.findBooksByAuthor(authorName).first()
     }
 
     fun findBookByTitle(bookName: String): Book {
-        return Book("","", "")
+        return bookRepository.findBooksByTitle(bookName).first()
     }
 
     fun findBookByISBN(isbn: String): Book {

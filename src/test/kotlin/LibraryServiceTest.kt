@@ -38,7 +38,7 @@ class LibraryServiceTest {
     }
 
     @Test
-    fun findMultipleBooksByAuthor(){
+    fun findMultipleBooksByAuthor() {
         val authorName = "abc"
 
         val booksByAuthor = service.findBooksByAuthor(authorName)
@@ -49,7 +49,7 @@ class LibraryServiceTest {
     }
 
     @Test
-    fun findMultipleBooksByAuthorFuzzySearch(){
+    fun findMultipleBooksByAuthorFuzzySearch() {
         val authorName = "smith"
 
         val booksByAuthor = service.findBooksByAuthor(authorName)
@@ -72,7 +72,7 @@ class LibraryServiceTest {
     }
 
     @Test
-    fun findMultipleBooksByTitle(){
+    fun findMultipleBooksByTitle() {
         val bookTitle = "xxx"
 
         val booksByTitle = service.findBooksByTitle(bookTitle)
@@ -83,7 +83,7 @@ class LibraryServiceTest {
     }
 
     @Test
-    fun findMultipleBooksByTitleFuzzySearch(){
+    fun findMultipleBooksByTitleFuzzySearch() {
         val bookTitle = "book"
 
         val booksByTitle = service.findBooksByTitle(bookTitle)
@@ -92,7 +92,6 @@ class LibraryServiceTest {
         assertTrue(booksByTitle.size == 2)
         assertTrue(booksByTitle.contains(Book("abc", "coolBook", "000")))
         assertTrue(booksByTitle.contains(Book("abc", "otherBook", "000")))
-
     }
 
     @Test

@@ -3,16 +3,16 @@ import persistence.BookRepository
 
 class LibraryService (private val bookRepository: BookRepository) {
 
-    fun findBookByAuthor(authorName: String): Book {
-        return bookRepository.findBooksByAuthor(authorName).first()
+    fun findBooksByAuthor(authorName: String): List<Book> {
+        return bookRepository.findBooksByAuthor(authorName)
     }
 
-    fun findBookByTitle(bookName: String): Book {
-        return bookRepository.findBooksByTitle(bookName).first()
+    fun findBooksByTitle(bookName: String): List<Book> {
+        return bookRepository.findBooksByTitle(bookName)
     }
 
-    fun findBookByISBN(isbn: String): Book {
-        return bookRepository.findBooksByISBN(isbn).first()
+    fun findBooksByISBN(isbn: String): List<Book> {
+        return bookRepository.findBooksByISBN(isbn)
     }
 
     fun checkoutBook(book: Book): Book {

@@ -30,23 +30,33 @@ class LibraryServiceTest {
     fun findBookByAuthor() {
         val authorName = "bob"
 
-        val (authorFromBook) = service.findBookByAuthor(authorName)
-        assertEquals(authorName, authorFromBook)
+        val booksByAuthor = service.findBooksByAuthor(authorName)
+
+        assertNotNull(booksByAuthor)
+        assertTrue(booksByAuthor.size == 1)
+        assertEquals(authorName, booksByAuthor.first().author)
     }
 
     @Test
     fun findBookByTitle() {
         val bookTitle = "coolBook"
 
-        val (_ , titleFromBook) = service.findBookByTitle(bookTitle)
-        assertEquals(bookTitle, titleFromBook)
+        val booksByTitle = service.findBooksByTitle(bookTitle)
+
+        assertNotNull(booksByTitle)
+        assertTrue(booksByTitle.size == 1)
+        assertEquals(bookTitle, booksByTitle.first().title)
     }
 
     @Test
     fun findBookByISBN() {
         val bookISBN = "123"
-        val (_, _, isbnFromBook) = service.findBookByISBN(bookISBN)
-        assertEquals(bookISBN, isbnFromBook)
+
+        val booksByISBN = service.findBooksByISBN(bookISBN)
+
+        assertNotNull(booksByISBN)
+        assertTrue(booksByISBN.size == 1)
+        assertEquals(bookISBN, booksByISBN.first().isbn)
     }
 
     @Test

@@ -1,8 +1,11 @@
 import model.Book
+import persistence.BookRepository
 
-class LibraryService {
+class LibraryService (val bookRepository: BookRepository) {
+
     fun findBookByAuthor(authorName: String): Book {
-        return Book("","", "")
+        val booksByAuthor = bookRepository.findBooksByAuthor(authorName)
+        return booksByAuthor.first()
     }
 
     fun findBookByTitle(bookName: String): Book {

@@ -1,4 +1,4 @@
-## Test proect for creating kotlin code
+## Test project for creating kotlin code
 
 ### Context
 

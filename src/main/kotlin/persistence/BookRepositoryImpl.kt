@@ -29,7 +29,8 @@ class BookRepositoryImpl : BookRepository {
     }
 
     override fun checkoutBook(book: Book): Book {
-        TODO("Not yet implemented")
+        book.available = false
+        return book
     }
 
     override fun availableBooks(): List<Book> {

@@ -1,7 +1,7 @@
 import model.Book
 import persistence.BookRepository
 
-class LibraryService (private val bookRepository: BookRepository) {
+class LibraryService(private val bookRepository: BookRepository) {
 
     fun findBooksByAuthor(authorName: String): List<Book> {
         return bookRepository.findBooksByAuthor(authorName)
@@ -16,7 +16,14 @@ class LibraryService (private val bookRepository: BookRepository) {
     }
 
     fun checkoutBook(book: Book): Book {
-        return book;
+        if (book.referenceBook) {
+            println("Checkout prohibited - cannot check out reference book")
+        } else if (!book.available) {
+            println("Checkout prohibited - book already checked out")
+        } else {
+            return bookRepository.checkoutBook(book)
+        }
+        return book
     }
 
     fun availableBooks(): List<Book> {

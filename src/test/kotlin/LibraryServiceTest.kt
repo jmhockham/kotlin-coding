@@ -1,7 +1,8 @@
+
 import model.Book
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import persistence.BookRepository
 import persistence.BookRepositoryImpl
@@ -130,6 +131,30 @@ class LibraryServiceTest {
 
     @Test
     fun checkoutBook() {
+        val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = false)
+
+        val checkoutBook = service.checkoutBook(bookToCheckout)
+
+        assertNotNull(checkoutBook)
+        assertFalse(checkoutBook.available)
+        assertEquals("Bob Smith", checkoutBook.author)
+        assertEquals("xxx", checkoutBook.title)
+        assertEquals("000", checkoutBook.isbn)
+        assertFalse(checkoutBook.referenceBook)
+    }
+
+    @Test
+    fun doNothingIfAlreadyCheckedOut() {
+        val bookToCheckout = Book("Bob Smith", "xxx", "000", available = false, referenceBook = false)
+
+        val checkoutBook = service.checkoutBook(bookToCheckout)
+
+        assertNotNull(checkoutBook)
+        assertFalse(checkoutBook.available)
+        assertEquals("Bob Smith", checkoutBook.author)
+        assertEquals("xxx", checkoutBook.title)
+        assertEquals("000", checkoutBook.isbn)
+        assertFalse(checkoutBook.referenceBook)
     }
 
     @Test

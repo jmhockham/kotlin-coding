@@ -1,5 +1,5 @@
 package model
 
 enum class UserType {
-    NORMAL_USER, LIBRARIAN
+    NORMAL_USER, LIBRARY_OWNER
 }

@@ -1,4 +1,5 @@
 import model.Book
+import model.User
 import persistence.BookRepository
 
 class LibraryService(private val bookRepository: BookRepository) {
@@ -15,11 +16,11 @@ class LibraryService(private val bookRepository: BookRepository) {
         return bookRepository.findBooksByISBN(isbn)
     }
 
-    fun checkoutBook(book: Book): Book {
-        if (book.referenceBook) {
-            println("Checkout prohibited - cannot check out reference book")
+    fun checkoutBook(book: Book, user: User): Book {
+        if (!user.canCheckoutBook(book)) {
+            println("Checkout failed: user permissions check failed")
         } else if (!book.available) {
-            println("Checkout prohibited - book already checked out")
+            println("Checkout failed: book already checked out")
         } else {
             return bookRepository.checkoutBook(book)
         }

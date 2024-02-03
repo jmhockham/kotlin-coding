@@ -27,6 +27,5 @@ I have many books which I would like to share with my community. That sounds lik
 
 ### Assumptions
 - There are only two types of users: library user, and library owner
-- The library owner is a superuser/admin; if a user can do something, the owner can do it. Ergo, we don't need to check who the 
-  user is, if the story starts with "as a library user"
-- No one should be checking out reference books; this includes the owners
+- The library owner is a superuser/admin; if a user can do something, the owner can do it. 
+- Normal library users cannot checkout reference books, but the owner can (it's their library after all)

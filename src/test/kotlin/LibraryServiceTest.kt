@@ -1,4 +1,6 @@
 import model.Book
+import model.User
+import model.UserType
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,6 +22,9 @@ class LibraryServiceTest {
         Book("abc", "xxx", "1234"),
         Book("abc", "xxx", "4567")
     )
+
+    private val normalUser = User("normy", UserType.NORMAL_USER)
+    private val libraryOwner = User("owner", UserType.LIBRARY_OWNER)
 
     @BeforeEach
     fun setup() {
@@ -133,21 +138,30 @@ class LibraryServiceTest {
     fun checkoutBook() {
         val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = false)
 
-        val checkoutBook = service.checkoutBook(bookToCheckout)
+        val checkoutBookNormal = service.checkoutBook(bookToCheckout, normalUser)
 
-        assertNotNull(checkoutBook)
-        assertFalse(checkoutBook.available)
-        assertEquals("Bob Smith", checkoutBook.author)
-        assertEquals("xxx", checkoutBook.title)
-        assertEquals("000", checkoutBook.isbn)
-        assertFalse(checkoutBook.referenceBook)
+        assertNotNull(checkoutBookNormal)
+        assertFalse(checkoutBookNormal.available)
+        assertEquals("Bob Smith", checkoutBookNormal.author)
+        assertEquals("xxx", checkoutBookNormal.title)
+        assertEquals("000", checkoutBookNormal.isbn)
+        assertFalse(checkoutBookNormal.referenceBook)
+
+        val checkoutBookOwner = service.checkoutBook(bookToCheckout, libraryOwner)
+
+        assertNotNull(checkoutBookOwner)
+        assertFalse(checkoutBookOwner.available)
+        assertEquals("Bob Smith", checkoutBookOwner.author)
+        assertEquals("xxx", checkoutBookOwner.title)
+        assertEquals("000", checkoutBookOwner.isbn)
+        assertFalse(checkoutBookOwner.referenceBook)
     }
 
     @Test
     fun doNothingIfAlreadyCheckedOut() {
         val bookToCheckout = Book("Bob Smith", "xxx", "000", available = false, referenceBook = false)
 
-        val checkoutBook = service.checkoutBook(bookToCheckout)
+        val checkoutBook = service.checkoutBook(bookToCheckout, normalUser)
 
         assertNotNull(checkoutBook)
         assertFalse(checkoutBook.available)
@@ -155,16 +169,39 @@ class LibraryServiceTest {
         assertEquals("xxx", checkoutBook.title)
         assertEquals("000", checkoutBook.isbn)
         assertFalse(checkoutBook.referenceBook)
+
+        val checkoutBookOwner = service.checkoutBook(bookToCheckout, libraryOwner)
+
+        assertNotNull(checkoutBookOwner)
+        assertFalse(checkoutBookOwner.available)
+        assertEquals("Bob Smith", checkoutBookOwner.author)
+        assertEquals("xxx", checkoutBookOwner.title)
+        assertEquals("000", checkoutBookOwner.isbn)
+        assertFalse(checkoutBookOwner.referenceBook)
     }
 
     @Test
-    fun cannotCheckoutReferenceBook() {
+    fun normalUserCannotCheckoutReferenceBook() {
         val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = true)
 
-        val checkoutBook = service.checkoutBook(bookToCheckout)
+        val checkoutBook = service.checkoutBook(bookToCheckout, normalUser)
 
         assertNotNull(checkoutBook)
         assertTrue(checkoutBook.available)
+        assertEquals("Bob Smith", checkoutBook.author)
+        assertEquals("xxx", checkoutBook.title)
+        assertEquals("000", checkoutBook.isbn)
+        assertTrue(checkoutBook.referenceBook)
+    }
+
+    @Test
+    fun ownerCanCheckoutReferenceBook() {
+        val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = true)
+
+        val checkoutBook = service.checkoutBook(bookToCheckout, libraryOwner)
+
+        assertNotNull(checkoutBook)
+        assertFalse(checkoutBook.available)
         assertEquals("Bob Smith", checkoutBook.author)
         assertEquals("xxx", checkoutBook.title)
         assertEquals("000", checkoutBook.isbn)

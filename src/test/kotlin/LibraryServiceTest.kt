@@ -1,4 +1,3 @@
-
 import model.Book
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -173,14 +172,16 @@ class LibraryServiceTest {
 
     @Test
     fun availableBooks() {
-        repository.addBooks(listOf(
-            Book("unavailableAuthor","unavailableBookOne","999", available = false),
-            Book("unavailableAuthor","unavailableBookTwo","999", available = false)
-        ))
+        repository.addBooks(
+            listOf(
+                Book("unavailableAuthor", "unavailableBookOne", "999", available = false),
+                Book("unavailableAuthor", "unavailableBookTwo", "999", available = false)
+            )
+        )
 
         val availableBooks = service.availableBooks()
 
         assertNotNull(availableBooks)
-        assertTrue(availableBooks.size==6)
+        assertTrue(availableBooks.size == 6)
     }
 }

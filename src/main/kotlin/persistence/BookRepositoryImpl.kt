@@ -34,6 +34,6 @@ class BookRepositoryImpl : BookRepository {
     }
 
     override fun availableBooks(): List<Book> {
-        TODO("Not yet implemented")
+        return books.filter { book: Book -> book.available }
     }
 }

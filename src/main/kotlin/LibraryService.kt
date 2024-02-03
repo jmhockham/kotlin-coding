@@ -27,6 +27,6 @@ class LibraryService(private val bookRepository: BookRepository) {
     }
 
     fun availableBooks(): List<Book> {
-        return emptyList();
+        return bookRepository.availableBooks()
     }
 }

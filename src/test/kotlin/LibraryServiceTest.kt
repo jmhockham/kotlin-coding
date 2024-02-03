@@ -12,18 +12,19 @@ class LibraryServiceTest {
     private val repository: BookRepository = BookRepositoryImpl()
     private val service: LibraryService = LibraryService(repository)
 
+    private val initialBooksInRepo = listOf(
+        Book("Bob Smith", "xxx", "000"),
+        Book("Sam Smith", "xxx", "000"),
+        Book("abc", "coolBook", "000"),
+        Book("abc", "otherBook", "000"),
+        Book("abc", "xxx", "1234"),
+        Book("abc", "xxx", "4567")
+    )
+
     @BeforeEach
     fun setup() {
         repository.removeAllBooks()
-        val booksToAdd = listOf(
-            Book("Bob Smith", "xxx", "000"),
-            Book("Sam Smith", "xxx", "000"),
-            Book("abc", "coolBook", "000"),
-            Book("abc", "otherBook", "000"),
-            Book("abc", "xxx", "1234"),
-            Book("abc", "xxx", "4567")
-        )
-        repository.addBooks(booksToAdd)
+        repository.addBooks(initialBooksInRepo)
     }
 
     @Test
@@ -182,6 +183,9 @@ class LibraryServiceTest {
         val availableBooks = service.availableBooks()
 
         assertNotNull(availableBooks)
-        assertTrue(availableBooks.size == 6)
+        assertEquals(initialBooksInRepo.size, availableBooks.size)
+        assertFalse(availableBooks.contains(Book("unavailableAuthor", "unavailableBookOne", "999", available = false)))
+        assertFalse(availableBooks.contains(Book("unavailableAuthor", "unavailableBookTwo", "999", available = false)))
+        assertTrue(availableBooks.count { book: Book -> !book.available } == 0)
     }
 }

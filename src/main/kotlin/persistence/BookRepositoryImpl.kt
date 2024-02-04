@@ -33,6 +33,11 @@ class BookRepositoryImpl : BookRepository {
         return book
     }
 
+    override fun checkinBook(book: Book): Book {
+        book.available = true
+        return book
+    }
+
     override fun availableBooks(): List<Book> {
         return books.filter { book: Book -> book.available }
     }

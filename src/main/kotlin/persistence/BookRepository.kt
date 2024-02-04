@@ -11,6 +11,8 @@ interface BookRepository {
 
     fun checkoutBook(book: Book): Book
 
+    fun checkinBook(book: Book): Book
+
     fun availableBooks(): List<Book>
 
     fun addBooks(bookList: List<Book>): List<Book>

@@ -181,6 +181,20 @@ class LibraryServiceTest {
     }
 
     @Test
+    fun checkinBook(){
+        val bookToCheckin = Book("Bob Smith", "xxx", "000", available = false, referenceBook = false)
+
+        val checkinBook = service.checkinBook(bookToCheckin)
+
+        assertNotNull(checkinBook)
+        assertTrue(checkinBook.available)
+        assertEquals("Bob Smith", checkinBook.author)
+        assertEquals("xxx", checkinBook.title)
+        assertEquals("000", checkinBook.isbn)
+        assertFalse(checkinBook.referenceBook)
+    }
+
+    @Test
     fun normalUserCannotCheckoutReferenceBook() {
         val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = true)
 

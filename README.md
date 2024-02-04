@@ -1,4 +1,4 @@
-## Test project for creating kotlin code
+## Test project for kotlin code
 
 ### Context
 
@@ -21,11 +21,14 @@ I have many books which I would like to share with my community. That sounds lik
 
 ### Not in scope
 
-- Keeping track of who has borrowed the book
 - Overdue books
 - Multiple copies of the same book (although we'll still program defensively around this)
+
+### Not asked for in stories, but added in
+- Keeping track of who has borrowed the book
 
 ### Assumptions
 - There are only two types of users: library user, and library owner
 - The library owner is a superuser/admin; if a user can do something, the owner can do it. 
 - Normal library users cannot checkout reference books, but the owner can (it's their library after all)
+- "Borrowing" implies checking a book in and out (two separate actions)

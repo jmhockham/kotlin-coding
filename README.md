@@ -22,7 +22,7 @@ I have many books which I would like to share with my community. That sounds lik
 ### Not in scope
 
 - Overdue books
-- Multiple copies of the same book (although we'll still program defensively around this)
+- Multiple copies of the same book
 
 ### Not asked for in stories, but added in
 - Keeping track of who has borrowed the book

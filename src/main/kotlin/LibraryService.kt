@@ -22,7 +22,7 @@ class LibraryService(private val bookRepository: BookRepository) {
         } else if (!book.available) {
             println("Checkout failed: book already checked out")
         } else {
-            return bookRepository.checkoutBook(book)
+            return bookRepository.checkoutBook(book, user)
         }
         return book
     }

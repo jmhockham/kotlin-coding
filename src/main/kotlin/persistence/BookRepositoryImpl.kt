@@ -1,6 +1,7 @@
 package persistence
 
 import model.Book
+import model.User
 
 class BookRepositoryImpl : BookRepository {
 
@@ -28,13 +29,15 @@ class BookRepositoryImpl : BookRepository {
         return books.filter { book: Book -> book.isbn.lowercase().contains(isbn.lowercase()) }
     }
 
-    override fun checkoutBook(book: Book): Book {
+    override fun checkoutBook(book: Book, user: User): Book {
         book.available = false
+        book.checkedOutBy = user
         return book
     }
 
     override fun checkinBook(book: Book): Book {
         book.available = true
+        book.checkedOutBy = null
         return book
     }
 

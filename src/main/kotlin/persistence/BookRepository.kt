@@ -1,6 +1,7 @@
 package persistence
 
 import model.Book
+import model.User
 
 interface BookRepository {
     fun findBooksByAuthor(authorName: String): List<Book>
@@ -9,7 +10,7 @@ interface BookRepository {
 
     fun findBooksByISBN(isbn: String): List<Book>
 
-    fun checkoutBook(book: Book): Book
+    fun checkoutBook(book: Book, user: User): Book
 
     fun checkinBook(book: Book): Book
 

@@ -14,21 +14,27 @@ class LibraryServiceTest {
     private val repository: BookRepository = BookRepositoryImpl()
     private val service: LibraryService = LibraryService(repository)
 
-    private val initialBooksInRepo = listOf(
-        Book("Bob Smith", "xxx", "000"),
-        Book("Sam Smith", "xxx", "000"),
-        Book("abc", "coolBook", "000"),
-        Book("abc", "otherBook", "000"),
-        Book("abc", "xxx", "1234"),
-        Book("abc", "xxx", "4567")
-    )
+    //we use this collection as a quick way of getting access to the data in the repo
+    //this lets our tests be atomic - we don't have to use the finder functions in the repo
+    //we can also easily modify the state of the books, to simplify test setup
+    private var initialBooksInRepo = mutableListOf<Book>()
 
     private val normalUser = User("normy", UserType.NORMAL_USER)
     private val libraryOwner = User("owner", UserType.LIBRARY_OWNER)
 
     @BeforeEach
     fun setup() {
+        initialBooksInRepo.clear()
         repository.removeAllBooks()
+
+        initialBooksInRepo = mutableListOf(
+            Book("Bob Smith", "xxx", "000"),
+            Book("Sam Smith", "xxx", "000"),
+            Book("abc", "coolBook", "000"),
+            Book("abc", "otherBook", "000"),
+            Book("abc", "xxx", "1234", referenceBook = true),
+            Book("abc", "xxx", "4567", referenceBook = true)
+        )
         repository.addBooks(initialBooksInRepo)
     }
 
@@ -130,13 +136,14 @@ class LibraryServiceTest {
 
         assertNotNull(booksByISBN)
         assertTrue(booksByISBN.size == 2)
-        assertTrue(booksByISBN.contains(Book("abc", "xxx", "1234")))
-        assertTrue(booksByISBN.contains(Book("abc", "xxx", "4567")))
+        assertTrue(booksByISBN.contains(Book("abc", "xxx", "1234", referenceBook = true)))
+        assertTrue(booksByISBN.contains(Book("abc", "xxx", "4567", referenceBook = true)))
     }
 
     @Test
     fun checkoutBook() {
-        val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = false)
+        val bookToCheckout = initialBooksInRepo[0]
+        val anotherBookToCheckout = initialBooksInRepo[1]
 
         val checkoutBookNormal = service.checkoutBook(bookToCheckout, normalUser)
 
@@ -146,20 +153,23 @@ class LibraryServiceTest {
         assertEquals("xxx", checkoutBookNormal.title)
         assertEquals("000", checkoutBookNormal.isbn)
         assertFalse(checkoutBookNormal.referenceBook)
+        assertEquals(normalUser, checkoutBookNormal.checkedOutBy)
 
-        val checkoutBookOwner = service.checkoutBook(bookToCheckout, libraryOwner)
+        val checkoutBookOwner = service.checkoutBook(anotherBookToCheckout, libraryOwner)
 
         assertNotNull(checkoutBookOwner)
         assertFalse(checkoutBookOwner.available)
-        assertEquals("Bob Smith", checkoutBookOwner.author)
+        assertEquals("Sam Smith", checkoutBookOwner.author)
         assertEquals("xxx", checkoutBookOwner.title)
         assertEquals("000", checkoutBookOwner.isbn)
         assertFalse(checkoutBookOwner.referenceBook)
+        assertEquals(libraryOwner, checkoutBookOwner.checkedOutBy)
     }
 
     @Test
     fun doNothingIfAlreadyCheckedOut() {
-        val bookToCheckout = Book("Bob Smith", "xxx", "000", available = false, referenceBook = false)
+        val bookToCheckout = initialBooksInRepo[0]
+        bookToCheckout.checkedOutBy = normalUser
 
         val checkoutBook = service.checkoutBook(bookToCheckout, normalUser)
 
@@ -169,6 +179,7 @@ class LibraryServiceTest {
         assertEquals("xxx", checkoutBook.title)
         assertEquals("000", checkoutBook.isbn)
         assertFalse(checkoutBook.referenceBook)
+        assertEquals(normalUser, checkoutBook.checkedOutBy)
 
         val checkoutBookOwner = service.checkoutBook(bookToCheckout, libraryOwner)
 
@@ -178,11 +189,13 @@ class LibraryServiceTest {
         assertEquals("xxx", checkoutBookOwner.title)
         assertEquals("000", checkoutBookOwner.isbn)
         assertFalse(checkoutBookOwner.referenceBook)
+        assertEquals(normalUser, checkoutBook.checkedOutBy)
     }
 
     @Test
     fun checkinBook(){
-        val bookToCheckin = Book("Bob Smith", "xxx", "000", available = false, referenceBook = false)
+        val bookToCheckin = initialBooksInRepo[0]
+        bookToCheckin.checkedOutBy = normalUser
 
         val checkinBook = service.checkinBook(bookToCheckin)
 
@@ -192,34 +205,37 @@ class LibraryServiceTest {
         assertEquals("xxx", checkinBook.title)
         assertEquals("000", checkinBook.isbn)
         assertFalse(checkinBook.referenceBook)
+        assertNull(checkinBook.checkedOutBy)
     }
 
     @Test
     fun normalUserCannotCheckoutReferenceBook() {
-        val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = true)
+        val bookToCheckout = initialBooksInRepo.last()
 
         val checkoutBook = service.checkoutBook(bookToCheckout, normalUser)
 
         assertNotNull(checkoutBook)
         assertTrue(checkoutBook.available)
-        assertEquals("Bob Smith", checkoutBook.author)
+        assertEquals("abc", checkoutBook.author)
         assertEquals("xxx", checkoutBook.title)
-        assertEquals("000", checkoutBook.isbn)
+        assertEquals("4567", checkoutBook.isbn)
         assertTrue(checkoutBook.referenceBook)
+        assertNull(checkoutBook.checkedOutBy)
     }
 
     @Test
     fun ownerCanCheckoutReferenceBook() {
-        val bookToCheckout = Book("Bob Smith", "xxx", "000", available = true, referenceBook = true)
+        val bookToCheckout = initialBooksInRepo.last()
 
         val checkoutBook = service.checkoutBook(bookToCheckout, libraryOwner)
 
         assertNotNull(checkoutBook)
         assertFalse(checkoutBook.available)
-        assertEquals("Bob Smith", checkoutBook.author)
+        assertEquals("abc", checkoutBook.author)
         assertEquals("xxx", checkoutBook.title)
-        assertEquals("000", checkoutBook.isbn)
+        assertEquals("4567", checkoutBook.isbn)
         assertTrue(checkoutBook.referenceBook)
+        assertEquals(libraryOwner, checkoutBook.checkedOutBy)
     }
 
     @Test

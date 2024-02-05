@@ -1,4 +1,5 @@
 import model.Book
+import model.BookType
 import model.User
 import model.UserType
 import org.junit.jupiter.api.Assertions.*
@@ -32,8 +33,8 @@ class LibraryServiceTest {
             Book("Sam Smith", "xxx", "000"),
             Book("abc", "coolBook", "000"),
             Book("abc", "otherBook", "000"),
-            Book("abc", "xxx", "1234", referenceBook = true),
-            Book("abc", "xxx", "4567", referenceBook = true)
+            Book("abc", "xxx", "1234", type = BookType.REFERENCE_BOOK),
+            Book("abc", "xxx", "4567", type = BookType.REFERENCE_BOOK)
         )
         repository.addBooks(initialBooksInRepo)
     }
@@ -136,8 +137,8 @@ class LibraryServiceTest {
 
         assertNotNull(booksByISBN)
         assertTrue(booksByISBN.size == 2)
-        assertTrue(booksByISBN.contains(Book("abc", "xxx", "1234", referenceBook = true)))
-        assertTrue(booksByISBN.contains(Book("abc", "xxx", "4567", referenceBook = true)))
+        assertTrue(booksByISBN.contains(Book("abc", "xxx", "1234", type = BookType.REFERENCE_BOOK)))
+        assertTrue(booksByISBN.contains(Book("abc", "xxx", "4567", type = BookType.REFERENCE_BOOK)))
     }
 
     @Test
@@ -152,7 +153,7 @@ class LibraryServiceTest {
         assertEquals("Bob Smith", checkoutBookNormal.author)
         assertEquals("xxx", checkoutBookNormal.title)
         assertEquals("000", checkoutBookNormal.isbn)
-        assertFalse(checkoutBookNormal.referenceBook)
+        assertEquals(BookType.NORMAL_BOOK, checkoutBookNormal.type)
         assertEquals(normalUser, checkoutBookNormal.checkedOutBy)
 
         val checkoutBookOwner = service.checkoutBook(anotherBookToCheckout, libraryOwner)
@@ -162,7 +163,7 @@ class LibraryServiceTest {
         assertEquals("Sam Smith", checkoutBookOwner.author)
         assertEquals("xxx", checkoutBookOwner.title)
         assertEquals("000", checkoutBookOwner.isbn)
-        assertFalse(checkoutBookOwner.referenceBook)
+        assertEquals(BookType.NORMAL_BOOK, checkoutBookOwner.type)
         assertEquals(libraryOwner, checkoutBookOwner.checkedOutBy)
     }
 
@@ -178,7 +179,7 @@ class LibraryServiceTest {
         assertEquals("Bob Smith", checkoutBook.author)
         assertEquals("xxx", checkoutBook.title)
         assertEquals("000", checkoutBook.isbn)
-        assertFalse(checkoutBook.referenceBook)
+        assertEquals(BookType.NORMAL_BOOK, checkoutBook.type)
         assertEquals(normalUser, checkoutBook.checkedOutBy)
 
         val checkoutBookOwner = service.checkoutBook(bookToCheckout, libraryOwner)
@@ -188,7 +189,7 @@ class LibraryServiceTest {
         assertEquals("Bob Smith", checkoutBookOwner.author)
         assertEquals("xxx", checkoutBookOwner.title)
         assertEquals("000", checkoutBookOwner.isbn)
-        assertFalse(checkoutBookOwner.referenceBook)
+        assertEquals(BookType.NORMAL_BOOK, checkoutBookOwner.type)
         assertEquals(normalUser, checkoutBook.checkedOutBy)
     }
 
@@ -204,7 +205,7 @@ class LibraryServiceTest {
         assertEquals("Bob Smith", checkinBook.author)
         assertEquals("xxx", checkinBook.title)
         assertEquals("000", checkinBook.isbn)
-        assertFalse(checkinBook.referenceBook)
+        assertEquals(BookType.NORMAL_BOOK, checkinBook.type)
         assertNull(checkinBook.checkedOutBy)
     }
 
@@ -219,7 +220,7 @@ class LibraryServiceTest {
         assertEquals("abc", checkoutBook.author)
         assertEquals("xxx", checkoutBook.title)
         assertEquals("4567", checkoutBook.isbn)
-        assertTrue(checkoutBook.referenceBook)
+        assertEquals(BookType.REFERENCE_BOOK, checkoutBook.type)
         assertNull(checkoutBook.checkedOutBy)
     }
 
@@ -234,7 +235,7 @@ class LibraryServiceTest {
         assertEquals("abc", checkoutBook.author)
         assertEquals("xxx", checkoutBook.title)
         assertEquals("4567", checkoutBook.isbn)
-        assertTrue(checkoutBook.referenceBook)
+        assertEquals(BookType.REFERENCE_BOOK, checkoutBook.type)
         assertEquals(libraryOwner, checkoutBook.checkedOutBy)
     }
 

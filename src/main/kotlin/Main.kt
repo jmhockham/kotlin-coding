@@ -1,4 +1,5 @@
 import model.Book
+import model.BookType
 import model.User
 import model.UserType
 import persistence.BookRepository
@@ -15,8 +16,8 @@ fun main() {
         Book("abc", "otherBook", "000"),
         Book("abc", "xxx", "1234"),
         Book("abc", "xxx", "4567"),
-        Book("unavailableAuthor", "unavailableBookOne", "999", available = true, referenceBook = true),
-        Book("unavailableAuthor", "unavailableBookTwo", "999", available = true, referenceBook = true)
+        Book("unavailableAuthor", "unavailableBookOne", "999", available = true, type = BookType.REFERENCE_BOOK),
+        Book("unavailableAuthor", "unavailableBookTwo", "999", available = true, type = BookType.REFERENCE_BOOK)
     )
     repository.addBooks(initialBooksInRepo)
 

@@ -5,6 +5,6 @@ data class Book (
     val title: String,
     val isbn: String,
     var available: Boolean = true,
-    val referenceBook: Boolean = false,
+    val type: BookType = BookType.NORMAL_BOOK,
     var checkedOutBy: User? = null
 )

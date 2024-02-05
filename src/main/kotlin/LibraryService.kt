@@ -38,7 +38,7 @@ class LibraryService(private val bookRepository: BookRepository) {
      * @param book - the book to be returned
      * @return the book we passed in as a param, after it's finished the checkin process
      */
-    fun checkinBook(book: Book): Book{
+    fun checkinBook(book: Book): Book {
         return bookRepository.checkinBook(book)
     }
 

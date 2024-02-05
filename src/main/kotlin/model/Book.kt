@@ -2,7 +2,7 @@ package model
 
 import java.time.OffsetDateTime
 
-data class Book (
+data class Book(
     val author: String,
     val title: String,
     val isbn: String,

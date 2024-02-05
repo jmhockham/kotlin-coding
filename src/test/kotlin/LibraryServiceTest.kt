@@ -157,7 +157,10 @@ class LibraryServiceTest {
         assertEquals("000", checkoutBookNormal.isbn)
         assertEquals(BookType.NORMAL_BOOK, checkoutBookNormal.type)
         assertEquals(normalUser, checkoutBookNormal.checkedOutBy)
-        assertTrue(OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES).isEqual(checkoutBookNormal.checkoutDate!!.truncatedTo(ChronoUnit.MINUTES)))
+        assertTrue(
+            OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+                .isEqual(checkoutBookNormal.checkoutDate!!.truncatedTo(ChronoUnit.MINUTES))
+        )
 
         val checkoutBookOwner = service.checkoutBook(anotherBookToCheckout, libraryOwner)
 
@@ -168,7 +171,10 @@ class LibraryServiceTest {
         assertEquals("000", checkoutBookOwner.isbn)
         assertEquals(BookType.NORMAL_BOOK, checkoutBookOwner.type)
         assertEquals(libraryOwner, checkoutBookOwner.checkedOutBy)
-        assertTrue(OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES).isEqual(checkoutBookOwner.checkoutDate!!.truncatedTo(ChronoUnit.MINUTES)))
+        assertTrue(
+            OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+                .isEqual(checkoutBookOwner.checkoutDate!!.truncatedTo(ChronoUnit.MINUTES))
+        )
     }
 
     @Test
@@ -203,7 +209,7 @@ class LibraryServiceTest {
     }
 
     @Test
-    fun checkinBook(){
+    fun checkinBook() {
         val bookToCheckin = initialBooksInRepo[0]
         bookToCheckin.checkedOutBy = normalUser
 
@@ -216,7 +222,10 @@ class LibraryServiceTest {
         assertEquals("000", checkinBook.isbn)
         assertEquals(BookType.NORMAL_BOOK, checkinBook.type)
         assertNull(checkinBook.checkedOutBy)
-        assertTrue(OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES).isEqual(checkinBook.checkinDate!!.truncatedTo(ChronoUnit.MINUTES)))
+        assertTrue(
+            OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+                .isEqual(checkinBook.checkinDate!!.truncatedTo(ChronoUnit.MINUTES))
+        )
     }
 
     @Test
@@ -248,7 +257,10 @@ class LibraryServiceTest {
         assertEquals("4567", checkoutBook.isbn)
         assertEquals(BookType.REFERENCE_BOOK, checkoutBook.type)
         assertEquals(libraryOwner, checkoutBook.checkedOutBy)
-        assertTrue(OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES).isEqual(checkoutBook.checkoutDate!!.truncatedTo(ChronoUnit.MINUTES)))
+        assertTrue(
+            OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+                .isEqual(checkoutBook.checkoutDate!!.truncatedTo(ChronoUnit.MINUTES))
+        )
     }
 
     @Test

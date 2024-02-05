@@ -2,6 +2,7 @@ package persistence
 
 import model.Book
 import model.User
+import java.time.OffsetDateTime
 
 class BookRepositoryImpl : BookRepository {
 
@@ -32,12 +33,14 @@ class BookRepositoryImpl : BookRepository {
     override fun checkoutBook(book: Book, user: User): Book {
         book.available = false
         book.checkedOutBy = user
+        book.checkoutDate = OffsetDateTime.now()
         return book
     }
 
     override fun checkinBook(book: Book): Book {
         book.available = true
         book.checkedOutBy = null
+        book.checkinDate = OffsetDateTime.now()
         return book
     }
 

@@ -24,10 +24,12 @@ I have many books which I would like to share with my community. That sounds lik
 - Overdue books
 - Multiple copies of the same book
 - Audit trail for book/user borrowing history
-- Dates/times for borrowing
+- Borrowing multiple books at the same time
 
 ### Not asked for in stories, but added in
+
 - Keeping track of who has borrowed the book
+- Dates/times for borrowing
 
 ### Assumptions
 - There are only two types of users: library user, and library owner
@@ -44,8 +46,6 @@ just using a collection. If/when we wanted to switch this out for something else
 do so fairly painlessly, as the logic is built around the interface contracts
 - **Only one service, and one test class**: This is mostly because there isn't a lot of complexity or domain logic, 
 which would necessitate other services + test classes
-- **No date/time for book checkin/checkout**: Any date/times would presumably be useful for seeing how often a given 
-book was borrowed, and for that you want to see the whole history, not just one datetime. This version would have been a step-up in complexity. As it wasn't asked for, I elected to keep it out.
 - **Permissions check is on the User class, not a separate service**: As there wasn't much to do regarding user 
 permissions, I've kept it simple, and just had the data class check things. It's probably not what a data class should
 be doing, but pulling that logic out into something else would result in very anemic looking bit of code; hence, it 

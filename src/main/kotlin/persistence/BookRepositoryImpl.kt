@@ -7,6 +7,7 @@ import java.time.OffsetDateTime
 class BookRepositoryImpl : BookRepository {
 
     private val books = mutableListOf<Book>()
+    private val usersAndOverdueDays = mutableMapOf<User, Int>()
 
     override fun addBooks(bookList: List<Book>): List<Book> {
         books.addAll(bookList)
@@ -43,6 +44,8 @@ class BookRepositoryImpl : BookRepository {
         book.available = true
         book.checkedOutBy = null
         book.checkinDate = OffsetDateTime.now()
+        book.checkoutDate = null
+        book.overdueDate = null
         return book
     }
 

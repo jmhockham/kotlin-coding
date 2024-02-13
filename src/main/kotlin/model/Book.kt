@@ -10,5 +10,6 @@ data class Book(
     val type: BookType = BookType.NORMAL_BOOK,
     var checkedOutBy: User? = null,
     var checkoutDate: OffsetDateTime? = null,
-    var checkinDate: OffsetDateTime? = null
+    var checkinDate: OffsetDateTime? = null,
+    var overdueDate: OffsetDateTime? = null
 )

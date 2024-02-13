@@ -33,7 +33,9 @@ class BookRepositoryImpl : BookRepository {
     override fun checkoutBook(book: Book, user: User): Book {
         book.available = false
         book.checkedOutBy = user
-        book.checkoutDate = OffsetDateTime.now()
+        val checkoutDate = OffsetDateTime.now()
+        book.checkoutDate = checkoutDate
+        book.overdueDate = checkoutDate.plusDays(7)
         return book
     }
 

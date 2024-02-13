@@ -280,4 +280,28 @@ class LibraryServiceTest {
         assertFalse(availableBooks.contains(Book("unavailableAuthor", "unavailableBookTwo", "999", available = false)))
         assertTrue(availableBooks.count { book: Book -> !book.available } == 0)
     }
+
+    @Test
+    fun shouldHaveAnOverdueDateForBooks(){
+        val book = initialBooksInRepo[0]
+        book.checkedOutBy = normalUser
+
+        val checkOutBook = service.checkoutBook(book, normalUser)
+
+        assertNotNull(checkOutBook)
+        assertFalse(checkOutBook.available)
+        assertEquals("Bob Smith", checkOutBook.author)
+        assertEquals("xxx", checkOutBook.title)
+        assertEquals("000", checkOutBook.isbn)
+        assertEquals(BookType.NORMAL_BOOK, checkOutBook.type)
+        assertEquals(normalUser, checkOutBook.checkedOutBy)
+        assertTrue(
+            OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+                .isEqual(checkOutBook.checkoutDate!!.truncatedTo(ChronoUnit.MINUTES))
+        )
+        assertNotNull(checkOutBook.overdueDate)
+        assertTrue(checkOutBook.checkoutDate!!.isBefore(checkOutBook.overdueDate))
+        assertTrue(OffsetDateTime.now().plusDays(7).truncatedTo(ChronoUnit.DAYS)
+            .isEqual(checkOutBook.overdueDate!!.truncatedTo(ChronoUnit.DAYS)))
+    }
 }

@@ -21,7 +21,8 @@ I have many books which I would like to share with my community. That sounds lik
 
 ### Not in scope
 
-- Overdue books
+- Overdue books 
+  - updated in pair programming, now includes total days overdue for a user
 - Multiple copies of the same book
 - Audit trail for book/user borrowing history
 - Borrowing multiple books at the same time

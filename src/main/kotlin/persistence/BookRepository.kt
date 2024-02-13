@@ -19,4 +19,6 @@ interface BookRepository {
     fun addBooks(bookList: List<Book>): List<Book>
 
     fun removeAllBooks(): List<Book>
+
+    fun getOverdueDaysByUser(user: User): Int
 }

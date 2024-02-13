@@ -283,7 +283,7 @@ class LibraryServiceTest {
     }
 
     @Test
-    fun shouldHaveAnOverdueDateForBooks(){
+    fun shouldHaveAnOverdueDateForBooks() {
         val book = initialBooksInRepo[0]
         book.checkedOutBy = normalUser
 
@@ -302,8 +302,10 @@ class LibraryServiceTest {
         )
         assertNotNull(checkOutBook.overdueDate)
         assertTrue(checkOutBook.checkoutDate!!.isBefore(checkOutBook.overdueDate))
-        assertTrue(OffsetDateTime.now().plusDays(7).truncatedTo(ChronoUnit.DAYS)
-            .isEqual(checkOutBook.overdueDate!!.truncatedTo(ChronoUnit.DAYS)))
+        assertTrue(
+            OffsetDateTime.now().plusDays(7).truncatedTo(ChronoUnit.DAYS)
+                .isEqual(checkOutBook.overdueDate!!.truncatedTo(ChronoUnit.DAYS))
+        )
     }
 
     @Test
@@ -328,5 +330,33 @@ class LibraryServiceTest {
                 .isEqual(checkinBook.checkinDate!!.truncatedTo(ChronoUnit.MINUTES))
         )
         assertNull(checkinBook.overdueDate)
+    }
+
+    @Test
+    fun `for overdue book, should track overdue days by user`() {
+        val bookToCheckin = initialBooksInRepo[0]
+        bookToCheckin.checkedOutBy = normalUser
+        val timeNow = OffsetDateTime.now().minusDays(8)
+        bookToCheckin.checkoutDate = timeNow
+        bookToCheckin.overdueDate = timeNow.plusDays(7)
+
+        val checkinBook = service.checkinBook(bookToCheckin)
+
+        assertNotNull(checkinBook)
+        assertTrue(checkinBook.available)
+        assertEquals("Bob Smith", checkinBook.author)
+        assertEquals("xxx", checkinBook.title)
+        assertEquals("000", checkinBook.isbn)
+        assertEquals(BookType.NORMAL_BOOK, checkinBook.type)
+        assertNull(checkinBook.checkedOutBy)
+        assertTrue(
+            OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+                .isEqual(checkinBook.checkinDate!!.truncatedTo(ChronoUnit.MINUTES))
+        )
+        assertNull(checkinBook.overdueDate)
+
+        val overdueDays = repository.getOverdueDaysByUser(normalUser)
+
+        assertEquals(1, overdueDays)
     }
 }
